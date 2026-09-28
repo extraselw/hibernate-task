@@ -23,7 +23,7 @@ run_script 'Moving student-1 to department-1' $MOVE_STUDENT_TO_DEPARTMENT_DEMO 1
 run_script 'Moving student-3 to department-2' $MOVE_STUDENT_TO_DEPARTMENT_DEMO 3 2
 run_script 'Moving student-2 to department-2' $MOVE_STUDENT_TO_DEPARTMENT_DEMO 2 2
 
-SEARCH_STUDENTS_BY_DEPARTMENT='SearchStudentsByDepartment'
+SEARCH_STUDENTS_BY_DEPARTMENT='SearchStudentsByDepartmentDemo'
 run_script 'Searching students in department-1' $SEARCH_STUDENTS_BY_DEPARTMENT 1
 run_script 'Searching students in department-2' $SEARCH_STUDENTS_BY_DEPARTMENT 2
 run_script 'Searching students in department-3' $SEARCH_STUDENTS_BY_DEPARTMENT 3

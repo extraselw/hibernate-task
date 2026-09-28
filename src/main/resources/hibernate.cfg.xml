@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Connection to the Postgres instance from compose.yaml -->
+        <property name="jakarta.persistence.jdbc.driver">org.postgresql.Driver</property>
+        <property name="jakarta.persistence.jdbc.url">jdbc:postgresql://localhost:55432/mydatabase</property>
+        <property name="jakarta.persistence.jdbc.user">myuser</property>
+        <property name="jakarta.persistence.jdbc.password">secret</property>
+        <property name="hibernate.connection.pool_size">5</property>
+
+        <!-- The schema is owned by the Flyway migrations, Hibernate only checks that the mappings match it -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- Fail fast if Bean Validation is unavailable, so constraints such as @Min/@Max are always enforced -->
+        <property name="jakarta.persistence.validation.mode">callback</property>
+
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Second-level cache: Ehcache via JCache, regions are configured in ehcache.xml -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.internal.JCacheRegionFactory</property>
+        <property name="hibernate.javax.cache.uri">ehcache.xml</property>
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+
+        <mapping class="edu.epam.fop.web.jpa.entity.Department"/>
+        <mapping class="edu.epam.fop.web.jpa.entity.Student"/>
+        <mapping class="edu.epam.fop.web.jpa.entity.Course"/>
+        <mapping class="edu.epam.fop.web.jpa.entity.Discipline"/>
+        <mapping class="edu.epam.fop.web.jpa.entity.DisciplineCourse"/>
+        <mapping class="edu.epam.fop.web.jpa.entity.Grade"/>
+    </session-factory>
+</hibernate-configuration>

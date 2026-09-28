@@ -15,7 +15,7 @@ function run_script() {
 
 ADDING_GRADE_DEMO='AddingOrUpdatingGradeDemo'
 run_script 'Adding grade for student-1 discipline-1 50' $ADDING_GRADE_DEMO 1 1 50
-run_script 'Adding grade for student-2 discipline-2 75' $ADDING_GRADE_DEMO 2 2 30
+run_script 'Adding grade for student-2 discipline-2 30' $ADDING_GRADE_DEMO 2 2 30
 
 UPDATING_GRADE_DEMO='AddingOrUpdatingGradeDemo'
 run_script 'Updating grade for student-1 discipline-1 to 100' $UPDATING_GRADE_DEMO 1 1 100

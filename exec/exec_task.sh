@@ -7,9 +7,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Define the path to the JAR file
-JAR_FILE="$PROJECT_ROOT/target/jpa-0.0.1-SNAPSHOT.jar"
+JAR_FILE="$PROJECT_ROOT/target/hibernate-task-0.0.1-SNAPSHOT.jar"
 
-CLASSPATH="$JAR_FILE:$(mvn -f "$PROJECT_ROOT/pom.xml" dependency:build-classpath -Dmdep.outputFile="$PROJECT_ROOT/cp.txt" -q && cat "$PROJECT_ROOT/cp.txt")"
+CLASSPATH="$JAR_FILE:$(sh "$PROJECT_ROOT/mvnw" -f "$PROJECT_ROOT/pom.xml" dependency:build-classpath -Dmdep.outputFile="$PROJECT_ROOT/cp.txt" -q && cat "$PROJECT_ROOT/cp.txt")"
 
 # Define the prefix and task
 
