@@ -88,10 +88,10 @@ class Task6GradeTest extends DatabaseTest {
 
     @Test
     void averageGradeIsNotPersisted() {
-        assertEquals(List.of("active", "department_id", "id", "name"), selectStrings("""
-                select column_name from information_schema.columns
-                where table_schema = current_schema() and table_name = 'student'
-                order by column_name"""));
+        assertEquals(List.of("active", "department_id", "id", "name"), selectStrings(
+                "select column_name from information_schema.columns"
+                        + " where table_schema = current_schema() and table_name = 'student'"
+                        + " order by column_name"));
     }
 
     @Test

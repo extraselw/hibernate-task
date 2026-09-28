@@ -33,10 +33,9 @@ public class DisciplineRepository implements JpaRepository<Discipline, Long> {
      */
     public List<Discipline> findByCourseId(Long courseId) {
         return sessionFactory.fromTransaction(session -> session
-                .createSelectionQuery("""
-                        select dc.discipline from DisciplineCourse dc
-                        where dc.course.id = :courseId
-                        order by dc.discipline.id""", Discipline.class)
+                .createSelectionQuery("select dc.discipline from DisciplineCourse dc"
+                        + " where dc.course.id = :courseId"
+                        + " order by dc.discipline.id", Discipline.class)
                 .setParameter("courseId", courseId)
                 .getResultList());
     }
@@ -46,10 +45,9 @@ public class DisciplineRepository implements JpaRepository<Discipline, Long> {
      */
     public List<Discipline> findByCourseIdAndGrading(Long courseId, Grading grading) {
         return sessionFactory.fromTransaction(session -> session
-                .createSelectionQuery("""
-                        select dc.discipline from DisciplineCourse dc
-                        where dc.course.id = :courseId and dc.grading = :grading
-                        order by dc.discipline.id""", Discipline.class)
+                .createSelectionQuery("select dc.discipline from DisciplineCourse dc"
+                        + " where dc.course.id = :courseId and dc.grading = :grading"
+                        + " order by dc.discipline.id", Discipline.class)
                 .setParameter("courseId", courseId)
                 .setParameter("grading", grading)
                 .getResultList());

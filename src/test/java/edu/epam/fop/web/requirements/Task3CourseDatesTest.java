@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -117,6 +118,6 @@ class Task3CourseDatesTest extends DatabaseTest {
     }
 
     private static Set<String> names(List<Course> courses) {
-        return Set.copyOf(courses.stream().map(Course::getName).toList());
+        return courses.stream().map(Course::getName).collect(Collectors.toSet());
     }
 }

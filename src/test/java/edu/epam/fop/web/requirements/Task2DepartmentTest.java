@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -104,6 +105,8 @@ class Task2DepartmentTest extends DatabaseTest {
     }
 
     private List<String> studentNames(Department department) {
-        return studentService.findByDepartment(department.getId()).stream().map(Student::getName).toList();
+        return studentService.findByDepartment(department.getId()).stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
     }
 }

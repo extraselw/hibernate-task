@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,7 +48,7 @@ class Task1CrudTest extends DatabaseTest {
         // Read one and all
         assertEquals("student-1", studentRepository.find(id).getName());
         assertEquals(List.of("student-1", "student-2"),
-                studentRepository.findAll().stream().map(Student::getName).toList());
+                studentRepository.findAll().stream().map(Student::getName).collect(Collectors.toList()));
 
         // Update
         Student newValues = studentRepository.find(id);

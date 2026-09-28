@@ -8,6 +8,7 @@ import org.hibernate.query.NativeQuery;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
@@ -24,6 +25,7 @@ import java.util.Properties;
  * which is recreated and migrated by Flyway for every test class. All tables are emptied, and their ids
  * restarted from 1, before every test, so the tests do not depend on each other.
  */
+@Tag("db")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class DatabaseTest {
 

@@ -25,7 +25,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>21</java.version>
+        <java.version>11</java.version>
         <lombok.version>1.18.36</lombok.version>
         <jpa.api.version>3.1.0</jpa.api.version>
         <hibernate.core.version>6.5.2.Final</hibernate.core.version>
@@ -39,7 +39,7 @@
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <junit.version>5.11.4</junit.version>
         <maven.surefire.version>3.5.2</maven.surefire.version>
-        <skipTests>true</skipTests>
+        <excluded.test.groups>db</excluded.test.groups>
     </properties>
 
     <dependencies>
@@ -141,7 +141,7 @@
         <profile>
             <id>db-tests</id>
             <properties>
-                <skipTests>false</skipTests>
+                <excluded.test.groups></excluded.test.groups>
             </properties>
         </profile>
     </profiles>
@@ -154,8 +154,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -172,6 +171,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
+                    <excludedGroups>${excluded.test.groups}</excludedGroups>
                     <systemPropertyVariables>
                         <java.util.logging.config.file>${project.basedir}/src/main/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>

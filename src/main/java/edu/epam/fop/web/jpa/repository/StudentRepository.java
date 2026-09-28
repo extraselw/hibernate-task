@@ -34,7 +34,8 @@ public class StudentRepository implements JpaRepository<Student, Long> {
      */
     public List<Student> findByDepartmentId(Long departmentId) {
         return sessionFactory.fromTransaction(session -> session
-                .createSelectionQuery("from Student s where s.department.id = :departmentId order by s.id", Student.class)
+                .createSelectionQuery("from Student s where s.department.id = :departmentId order by s.id",
+                        Student.class)
                 .setParameter("departmentId", departmentId)
                 .getResultList());
     }

@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -30,13 +31,15 @@ class Task0SchemaTest extends DatabaseTest {
         Path migrations = Path.of(Objects.requireNonNull(getClass().getResource("/db/migration")).toURI());
         List<String> scripts;
         try (Stream<Path> files = Files.list(migrations)) {
-            scripts = files.map(file -> file.getFileName().toString()).sorted().toList();
+            scripts = files.map(file -> file.getFileName().toString()).sorted().collect(Collectors.toList());
         }
 
         assertFalse(scripts.isEmpty());
         scripts.forEach(script -> assertTrue(script.matches("V\\d{3}__\\w+\\.sql"), script));
 
-        List<String> scriptVersions = scripts.stream().map(script -> script.substring(1, 4)).toList();
+        List<String> scriptVersions = scripts.stream()
+                .map(script -> script.substring(1, 4))
+                .collect(Collectors.toList());
         assertEquals(scriptVersions, selectStrings(
                 "select version from flyway_schema_history where success order by installed_rank"));
     }
@@ -68,9 +71,8 @@ class Task0SchemaTest extends DatabaseTest {
     @ValueSource(strings = {"student", "course", "department", "discipline"})
     void idIsBigserialPrimaryKey(String table) {
         assertEquals(List.of("id"), primaryKey(table));
-        String idDefault = selectStrings("""
-                select column_default from information_schema.columns
-                where table_schema = current_schema() and table_name = ?1 and column_name = 'id'""", table).get(0);
+        String idDefault = selectStrings("select column_default from information_schema.columns"
+                + " where table_schema = current_schema() and table_name = ?1 and column_name = 'id'", table).get(0);
         assertTrue(idDefault.startsWith("nextval("), idDefault);
     }
 
@@ -102,38 +104,36 @@ class Task0SchemaTest extends DatabaseTest {
     }
 
     private List<String> columns(String table) {
-        return selectStrings("""
-                select column_name || ' ' || data_type from information_schema.columns
-                where table_schema = current_schema() and table_name = ?1
-                order by column_name""", table);
+        return selectStrings("select column_name || ' ' || data_type from information_schema.columns"
+                + " where table_schema = current_schema() and table_name = ?1"
+                + " order by column_name", table);
     }
 
     private List<String> nullability(String table) {
-        return selectStrings("""
-                select column_name || ' ' || is_nullable from information_schema.columns
-                where table_schema = current_schema() and table_name = ?1
-                order by column_name""", table);
+        return selectStrings("select column_name || ' ' || is_nullable from information_schema.columns"
+                + " where table_schema = current_schema() and table_name = ?1"
+                + " order by column_name", table);
     }
 
     private List<String> primaryKey(String table) {
-        return selectStrings("""
-                select kcu.column_name
-                from information_schema.table_constraints tc
-                join information_schema.key_column_usage kcu
-                    on kcu.constraint_name = tc.constraint_name and kcu.table_schema = tc.table_schema
-                where tc.table_schema = current_schema() and tc.table_name = ?1 and tc.constraint_type = 'PRIMARY KEY'
-                order by kcu.ordinal_position""", table);
+        return selectStrings("select kcu.column_name"
+                + " from information_schema.table_constraints tc"
+                + " join information_schema.key_column_usage kcu"
+                + " on kcu.constraint_name = tc.constraint_name and kcu.table_schema = tc.table_schema"
+                + " where tc.table_schema = current_schema() and tc.table_name = ?1"
+                + " and tc.constraint_type = 'PRIMARY KEY'"
+                + " order by kcu.ordinal_position", table);
     }
 
     private List<String> foreignKeys(String table) {
-        return selectStrings("""
-                select kcu.column_name || ' -> ' || ccu.table_name || '(' || ccu.column_name || ')'
-                from information_schema.table_constraints tc
-                join information_schema.key_column_usage kcu
-                    on kcu.constraint_name = tc.constraint_name and kcu.table_schema = tc.table_schema
-                join information_schema.constraint_column_usage ccu
-                    on ccu.constraint_name = tc.constraint_name and ccu.table_schema = tc.table_schema
-                where tc.table_schema = current_schema() and tc.table_name = ?1 and tc.constraint_type = 'FOREIGN KEY'
-                order by 1""", table);
+        return selectStrings("select kcu.column_name || ' -> ' || ccu.table_name || '(' || ccu.column_name || ')'"
+                + " from information_schema.table_constraints tc"
+                + " join information_schema.key_column_usage kcu"
+                + " on kcu.constraint_name = tc.constraint_name and kcu.table_schema = tc.table_schema"
+                + " join information_schema.constraint_column_usage ccu"
+                + " on ccu.constraint_name = tc.constraint_name and ccu.table_schema = tc.table_schema"
+                + " where tc.table_schema = current_schema() and tc.table_name = ?1"
+                + " and tc.constraint_type = 'FOREIGN KEY'"
+                + " order by 1", table);
     }
 }

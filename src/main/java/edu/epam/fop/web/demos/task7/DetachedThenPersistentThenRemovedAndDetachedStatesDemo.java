@@ -57,7 +57,8 @@ public class DetachedThenPersistentThenRemovedAndDetachedStatesDemo {
 
             // ...but the row is gone, so a new session finds nothing
             try (Session session = sessionFactory.openSession()) {
-                System.out.println("[DETACHED]   session.get() in a new session returns " + session.get(Course.class, id));
+                System.out.println("[DETACHED]   session.get() in a new session returns "
+                        + session.get(Course.class, id));
             }
         }
     }

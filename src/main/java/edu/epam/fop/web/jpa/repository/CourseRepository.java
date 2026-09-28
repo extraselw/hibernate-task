@@ -32,10 +32,9 @@ public class CourseRepository implements JpaRepository<Course, Long> {
      */
     public List<Course> findActive(OffsetDateTime moment) {
         return sessionFactory.fromTransaction(session -> session
-                .createSelectionQuery("""
-                        from Course c
-                        where c.startAt <= :moment and (c.endAt is null or c.endAt > :moment)
-                        order by c.startAt, c.id""", Course.class)
+                .createSelectionQuery("from Course c"
+                        + " where c.startAt <= :moment and (c.endAt is null or c.endAt > :moment)"
+                        + " order by c.startAt, c.id", Course.class)
                 .setParameter("moment", moment)
                 .getResultList());
     }
@@ -55,10 +54,9 @@ public class CourseRepository implements JpaRepository<Course, Long> {
      */
     public List<Course> findByDisciplineId(Long disciplineId) {
         return sessionFactory.fromTransaction(session -> session
-                .createSelectionQuery("""
-                        select dc.course from DisciplineCourse dc
-                        where dc.discipline.id = :disciplineId
-                        order by dc.course.id""", Course.class)
+                .createSelectionQuery("select dc.course from DisciplineCourse dc"
+                        + " where dc.discipline.id = :disciplineId"
+                        + " order by dc.course.id", Course.class)
                 .setParameter("disciplineId", disciplineId)
                 .getResultList());
     }
